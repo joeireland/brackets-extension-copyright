@@ -42,22 +42,31 @@ define(function (require, exports, module) {
         HOTKEY         = "Alt-C";
 
     function copyright() {
-        var text = Preferences.get("text");
-        
-        if (!text) {
-            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, "Extension Configuration Error",
-                                    "Select 'Debug/Open Preferences File' and set joeireland.copyright.text with your copyright text");
-            return;
-        }
-        
+        var text  = Preferences.get("text");
         var author = Preferences.get("author");
         
-        if (!author) {
-            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, "Extension Configuration Error",
-                                    "Select 'Debug/Open Preferences File' and set joeireland.copyright.author with your copyright author");
+        if (!author || !text || text.length === 0) {
+            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, "Copyright Extension Configuration Error",
+                                    'Select "Debug > Open Preferences File" and set the following configuration variables:<br><pre>' +
+                                    '  "joeireland.copyright.author":     "author of the copyright"<br>' +
+                                    '  "joeireland.copyright.text":       "The copyright text (uncommented)"<br>' +
+                                    '  "joeireland.copyright.commentCmd": "edit.blockComment" or "edit.inlineComment"</pre>');
             return;
         }
         
+        var commentCmd = Preferences.get("commentCmd");
+
+        if (!commentCmd) {
+            Dialogs.showModalDialog(DefaultDialogs.DIALOG_ID_INFO, "Copyright Extension Configuration Error",
+                                    'The Copyright extension now comments your copyright text for you. You must remove ' +
+                                    'your comment characters from the copyright text for this version of the extension<hr>' +
+                                    'Select "Debug > Open Preferences File" and set the following configuration variables:<br><pre>' +
+                                    '  "joeireland.copyright.author":     "author of the copyright"<br>' +
+                                    '  "joeireland.copyright.text":       "The copyright text (uncommented)"<br>' +
+                                    '  "joeireland.copyright.commentCmd": "edit.blockComment" or "edit.inlineComment"</pre>');
+            return;
+        }
+
         var editor = EditorManager.getFocusedEditor();
         
         if (editor) {
@@ -70,6 +79,9 @@ define(function (require, exports, module) {
             }
             
             editor.document.replaceRange(toInsert, {line: 0, ch: 0});
+            editor.setSelection({line: 0, ch: 0}, {line: text.length - 1, ch: text[text.length - 1].length}, true);
+            CommandManager.execute(commentCmd);
+            editor.setCursorPos({line: 0, ch: 0});
         }
     }
     
