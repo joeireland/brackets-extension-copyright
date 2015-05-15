@@ -50,7 +50,7 @@ define(function (require, exports, module) {
                                     'Select "Debug > Open Preferences File" and set the following configuration variables:<br><pre>' +
                                     '  "joeireland.copyright.author":     "author of the copyright"<br>' +
                                     '  "joeireland.copyright.text":       "The copyright text (uncommented)"<br>' +
-                                    '  "joeireland.copyright.commentCmd": "edit.blockComment" or "edit.inlineComment"</pre>');
+                                    '  "joeireland.copyright.commentCmd": "edit.blockComment" or "edit.lineComment"</pre>');
             return;
         }
         
@@ -63,7 +63,7 @@ define(function (require, exports, module) {
                                     'Select "Debug > Open Preferences File" and set the following configuration variables:<br><pre>' +
                                     '  "joeireland.copyright.author":     "author of the copyright"<br>' +
                                     '  "joeireland.copyright.text":       "The copyright text (uncommented)"<br>' +
-                                    '  "joeireland.copyright.commentCmd": "edit.blockComment" or "edit.inlineComment"</pre>');
+                                    '  "joeireland.copyright.commentCmd": "edit.blockComment" or "edit.lineComment"</pre>');
             return;
         }
 
