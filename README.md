@@ -22,7 +22,7 @@ Press the **"Alt+C"** HotKey or select **"Edit > Insert Copyright"** menu item
   as an array of strings (without commentting characters). Variables of ${AUTHOR}
   and ${DATE} may be used within the copyright text.
 * Add **joeireland.copyright.comment-cmd** set to the desired comment command
-  style. Either "edit.blockComment" or "edit.inlineComment".
+  style. Either "edit.blockComment" or "edit.lineComment".
 
 #####Example:
 "joeireland.copyright.commentCmd": "edit.blockComment",  
