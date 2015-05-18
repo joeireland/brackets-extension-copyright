@@ -42,34 +42,14 @@ define(function (require, exports, module) {
             AUTHOR_VAR:       "${AUTHOR}",
             AUTHOR_PREF:      "author",
             COMMENT_CMD_PREF: "commentCmd",
-            TEXT_PREF:        "text",
-            DEFAULT_TEXT:     ["The MIT License (MIT)",
-                               "",
-                               "Copyright (c) ${DATE} ${AUTHOR}",
-                               "",
-                               "Permission is hereby granted, free of charge, to any person obtaining a copy of",
-                               "this software and associated documentation files (the \"Software\"), to deal in",
-                               "the Software without restriction, including without limitation the rights to",
-                               "use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of",
-                               "the Software, and to permit persons to whom the Software is furnished to do so,",
-                               "subject to the following conditions:",
-                               "",
-                               "The above copyright notice and this permission notice shall be included in all",
-                               "copies or substantial portions of the Software.",
-                               "",
-                               "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR",
-                               "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS",
-                               "FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR",
-                               "COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER",
-                               "IN AN ACTION OF CONTRACT, TORTOR OTHERWISE, ARISING FROM, OUT OF OR IN",
-                               "CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
-                               ""]
+            TEXT_PREF:        "text"
         },
         WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
         ExtensionUtils   = brackets.getModule("utils/ExtensionUtils"),
         Resizer          = brackets.getModule("utils/Resizer"),
         PrefManager      = brackets.getModule("preferences/PreferencesManager"),
         Preferences      = PrefManager.getExtensionPrefs("joeireland.copyright"),
+        DefaultLicense   = require("text!./text/default-license.txt"),
         Panel            = require("text!./html/panel.html"),
         Button           = require("text!./html/button.html"),
         $button,
@@ -121,6 +101,7 @@ define(function (require, exports, module) {
     };
 
     Config.prototype.update = function () {
+        var author  = Preferences.get(CONST.AUTHOR_PREF);
         var command = Preferences.get(CONST.COMMENT_CMD_PREF);
         var text    = Preferences.get(CONST.TEXT_PREF);
 
@@ -129,12 +110,14 @@ define(function (require, exports, module) {
         }
 
         if (this.isTextUnset(text)) {
-            text = CONST.DEFAULT_TEXT;
+            text = DefaultLicense;
+        } else {
+            text = text.join("\n");
         }
 
-        $("#" + CONST.AUTHOR_ID).val(Preferences.get(CONST.AUTHOR_PREF));
+        $("#" + CONST.AUTHOR_ID).val(author);
         $("#" + CONST.COMMENT_CMD_ID).val(command);
-        $("#" + CONST.TEXT_ID).val(text.join("\n"));
+        $("#" + CONST.TEXT_ID).val(text);
     };
 
     Config.prototype.showPanel = function () {
